@@ -1,0 +1,28 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//Users/yamamotokazuhiro/Documents/コーディング/学習/react/notion/notion-clone/**)",
+      "Bash(npm run dev:*)",
+      "Bash(curl:*)",
+      "Bash(npm run lint)",
+      "Bash(npx tsc:*)",
+      "Bash(npm ls:*)",
+      "Bash(npm install:*)",
+      "Bash(pkill:*)",
+      "Bash(npm run build:*)",
+      "Bash(node:*)",
+      "Bash(timeout:*)",
+      "mcp__serena__think_about_task_adherence",
+      "mcp__serena__activate_project",
+      "mcp__serena__read_file",
+      "mcp__serena__think_about_collected_information",
+      "mcp__serena__replace_symbol_body",
+      "mcp__serena__replace_regex",
+      "mcp__serena__create_text_file",
+      "mcp__serena__think_about_whether_you_are_done",
+      "Bash(npx supabase:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
