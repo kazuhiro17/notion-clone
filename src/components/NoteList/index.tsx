@@ -2,6 +2,7 @@ import { cn } from "@/lib/utils";
 import { NoteItem } from "./NoteItem";
 import { useNoteStore } from "@/modules/notes/note.state";
 import { noteRepository } from "@/modules/notes/note.repository";
+import { useCurrentUserStore } from "@/modules/auth/current-user.state";
 
 interface NoteListProps {
   layer?: number;
@@ -9,14 +10,15 @@ interface NoteListProps {
 }
 
 export function NoteList({ layer = 0, parentId }: NoteListProps) {
-  void parentId; // Prevent unused parameter error
+  // void parentId;
   const noteStore = useNoteStore();
   const notes = noteStore.getAll();
-  const { currentUser } = useNoteStore();
+  const { currentUser } = useCurrentUserStore();
 
   const createChild = async (e: React.MouseEvent, parentId: number) => {
     e.stopPropagation();
-    const newNote = await noteRepository.create(currentUser?.id, {
+    if (!currentUser?.id) return;
+    const newNote = await noteRepository.create(currentUser.id, {
       parentId,
     });
     noteStore.set([newNote]);
