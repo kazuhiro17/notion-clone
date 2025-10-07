@@ -24,6 +24,13 @@ export function NoteList({ layer = 0, parentId }: NoteListProps) {
     noteStore.set([newNote]);
   };
 
+  const fetchChildren = async(e: React.MouseEvent, note: Note) => {
+    e.stopPropagation();
+    const children = await noteRepository.find(currentUser!.id, note.id);
+    if (children == null) return;
+    noteStore.set(children);
+  };
+
   return (
     <>
       <p
@@ -35,12 +42,14 @@ export function NoteList({ layer = 0, parentId }: NoteListProps) {
       >
         ページがありません
       </p>
-      {notes.map((note) => {
+      {notes
+      .map((note) => {
         return (
           <div key={note.id}>
             <NoteItem
               note={note}
               layer={layer}
+              onExpand={(e: React.MouseEvent) => fetchChildren(e, note)}
               onCreate={(e) => createChild(e, note.id)}
             />
           </div>
