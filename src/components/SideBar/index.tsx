@@ -29,7 +29,7 @@ const SideBar: FC<Props> = ({ onSearchButtonClicked }) => {
 
   const signout = async () => {
     await authRepository.signout();
-    currentUserStore.set(undefined);
+    currentUserStore.set(null);
     noteStore.clear();
   };
 

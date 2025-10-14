@@ -5,7 +5,8 @@ import { useCurrentUserStore } from "./modules/auth/current-user.state";
 import { useNoteStore } from "./modules/notes/note.state";
 import { useEffect, useState } from "react";
 import { noteRepository } from "./modules/notes/note.repository";
-import { unsubscribe } from "diagnostics_channel";
+import { subscribe, unsubscribe } from "./lib/supabase";
+import { Note } from "./types/note";
 
 const Layout = () => {
   const navigate = useNavigate();
@@ -19,7 +20,9 @@ const Layout = () => {
     fetchNotes();
     const channel = subscribeNotes();
     return () => {
-      unsubscribe(channel!);
+      if (channel != null) {
+        unsubscribe(channel);
+      }
     };
   }, []);
 
@@ -28,7 +31,7 @@ const Layout = () => {
     return subscribe(currentUser.id, (payload) => {
       if (payload.eventType === "INSERT" || payload.eventType === "UPDATE") {
         noteStore.set([payload.new]);
-      } else if (payload.eventType === "DELETE") {
+      } else if (payload.eventType === "DELETE" && payload.old?.id != null) {
         noteStore.delete(payload.old.id);
       }
     });
