@@ -5,6 +5,7 @@ import {
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
 import {
+  ChevronDown,
   ChevronRight,
   FileIcon,
   MoreHorizontal,
@@ -40,7 +41,7 @@ export function NoteItem({
   const [isHovered, setIsHovered] = useState(false);
 
   const getIcon = () => {
-    return isHovered ? ChevronRight : FileIcon;
+    return expanded ? ChevronDown : isHovered ? ChevronRight : FileIcon;
   };
 
   const menu = (
@@ -89,7 +90,7 @@ export function NoteItem({
         icon={getIcon()}
         onIconClick={onExpand}
         trailingItem={menu}
-        isActive={isHovered}
+        isActive={isHovered || isSelected}
       />
     </div>
   );
