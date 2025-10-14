@@ -49,10 +49,10 @@ export function NoteItem({
       <DropdownMenu>
         <DropdownMenuTrigger onClick={(e) => e.stopPropagation()}>
           <div
-            className="h-full ml-auto rounded-sm hover:bg-neutral-300"
+            className="h-full ml-auto rounded-sm hover:bg-neutral-300 dark:hover:bg-neutral-700"
             role="button"
           >
-            <MoreHorizontal className="w-4 h-4 text-muted-foreground" />
+            <MoreHorizontal className="w-4 h-4 text-muted-foreground dark:text-neutral-400" />
           </div>
         </DropdownMenuTrigger>
         <DropdownMenuContent
@@ -68,11 +68,11 @@ export function NoteItem({
         </DropdownMenuContent>
       </DropdownMenu>
       <div
-        className="h-full ml-auto rounded-sm hover:bg-neutral-300"
+        className="h-full ml-auto rounded-sm hover:bg-neutral-300 dark:hover:bg-neutral-700"
         role="button"
         onClick={onCreate}
       >
-        <Plus className="w-4 h-4 text-muted-foreground" />
+        <Plus className="w-4 h-4 text-muted-foreground dark:text-neutral-400" />
       </div>
     </div>
   );

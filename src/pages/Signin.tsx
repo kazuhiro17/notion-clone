@@ -16,13 +16,13 @@ function Signin() {
   if (currentUserStore.currentUser != null) return <Navigate replace to="/" />;
 
   return (
-    <div className="min-h-screen bg-gray-100 py-10 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gray-100 dark:bg-neutral-900 py-10 px-4 sm:px-6 lg:px-8">
       <div className="flex flex-col items-center">
-        <h2 className="text-3xl font-extrabold text-gray-900">
+        <h2 className="text-3xl font-extrabold text-gray-900 dark:text-neutral-100">
           Notionクローン
         </h2>
         <div className="mt-8 w-full max-w-md">
-          <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+          <div className="bg-white dark:bg-neutral-800 py-8 px-4 shadow sm:rounded-lg sm:px-10">
             <div className="space-y-6">
               <div>
                 <label

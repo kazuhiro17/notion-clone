@@ -65,7 +65,7 @@ const Layout = () => {
       {!isLoading && (
         <SideBar onSearchButtonClicked={() => setIsShowModal(true)} />
       )}
-      <main className="flex-1 h-full overflow-y-auto">
+      <main className="flex-1 h-full overflow-y-auto dark:bg-neutral-900">
         <Outlet />
         <SearchModal
           isOpen={isShowModal}
