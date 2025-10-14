@@ -1,11 +1,11 @@
-import { cn } from "@/lib/utils";
-import { NoteItem } from "./NoteItem";
-import { useNoteStore } from "@/modules/notes/note.state";
-import { noteRepository } from "@/modules/notes/note.repository";
-import { useCurrentUserStore } from "@/modules/auth/current-user.state";
-import { Note } from "@/modules/notes/note.entity";
-import { useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { cn } from '@/lib/utils';
+import { NoteItem } from './NoteItem';
+import { useNoteStore } from '@/modules/notes/note.state';
+import { useCurrentUserStore } from '@/modules/auth/current-user.state';
+import { noteRepository } from '@/modules/notes/note.repository';
+import { Note } from '@/modules/notes/note.entity';
+import { useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 
 interface NoteListProps {
   layer?: number;
@@ -19,14 +19,11 @@ export function NoteList({ layer = 0, parentId }: NoteListProps) {
   const noteStore = useNoteStore();
   const notes = noteStore.getAll();
   const { currentUser } = useCurrentUserStore();
-  const [expanded, setExpanded] = useState<Map<Number, boolean>>(new Map());
+  const [expanded, setExpanded] = useState<Map<number, boolean>>(new Map());
 
   const createChild = async (e: React.MouseEvent, parentId: number) => {
     e.stopPropagation();
-    if (!currentUser?.id) return;
-    const newNote = await noteRepository.create(currentUser.id, {
-      parentId,
-    });
+    const newNote = await noteRepository.create(currentUser!.id, { parentId });
     noteStore.set([newNote]);
     setExpanded((prev) => prev.set(parentId, true));
     moveToDetail(newNote.id);
@@ -34,8 +31,7 @@ export function NoteList({ layer = 0, parentId }: NoteListProps) {
 
   const fetchChildren = async (e: React.MouseEvent, note: Note) => {
     e.stopPropagation();
-    if (!currentUser?.id) return;
-    const children = await noteRepository.find(currentUser.id, note.id);
+    const children = await noteRepository.find(currentUser!.id, note.id);
     if (children == null) return;
     noteStore.set(children);
     setExpanded((prev) => {
@@ -49,7 +45,7 @@ export function NoteList({ layer = 0, parentId }: NoteListProps) {
     e.stopPropagation();
     await noteRepository.delete(noteId);
     noteStore.delete(noteId);
-    navigate("/");
+    navigate('/');
   };
 
   const moveToDetail = (noteId: number) => {
@@ -61,21 +57,21 @@ export function NoteList({ layer = 0, parentId }: NoteListProps) {
       <p
         className={cn(
           `hidden text-sm font-medium text-muted-foreground/80`,
-          layer === 0 && "hidden"
+          layer === 0 && 'hidden'
         )}
         style={{ paddingLeft: layer ? `${layer * 12 + 25}px` : undefined }}
       >
         ページがありません
       </p>
       {notes
-        .filter((note) => note.parent_document === parentId)
+        .filter((note) => note.parent_document == parentId)
         .map((note) => {
           return (
             <div key={note.id}>
               <NoteItem
                 note={note}
                 layer={layer}
-                isSelected={id === note.id}
+                isSelected={id == note.id}
                 expanded={expanded.get(note.id)}
                 onClick={() => moveToDetail(note.id)}
                 onExpand={(e: React.MouseEvent) => fetchChildren(e, note)}

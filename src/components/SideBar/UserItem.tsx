@@ -6,7 +6,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { User } from '@/types/note';
+import { User } from '@supabase/supabase-js';
 import { FC } from 'react';
 import { Item } from './Item';
 

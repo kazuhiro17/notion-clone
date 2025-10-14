@@ -1,42 +1,28 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Layout from "./Layout";
-import { Home } from "./pages/Home";
-import NoteDetail from "./pages/NoteDetail";
-import Signin from "./pages/Signin";
-import Signup from "./pages/Signup";
-import { useEffect, useState } from "react";
-import { useCurrentUserStore } from "./modules/auth/current-user.state";
-import { supabase } from "./lib/supabase";
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Layout from './Layout';
+import { Home } from './pages/Home';
+import NoteDetail from './pages/NoteDetail';
+import Signin from './pages/Signin';
+import Signup from './pages/Signup';
+import { useEffect, useState } from 'react';
+import { useCurrentUserStore } from './modules/auth/current-user.state';
+import { authRepository } from './modules/auth/auth.repository';
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
-  const currentUserStore = useCurrentUserStore();
+  const currentUsetStore = useCurrentUserStore();
 
   useEffect(() => {
     setSession();
   }, []);
 
   const setSession = async () => {
-    try {
-      // Supabaseから現在のセッションを取得
-      const { data: { session } } = await supabase.auth.getSession();
-      if (session?.user) {
-        const user = {
-          ...session.user,
-          userName: session.user.user_metadata.name,
-        };
-        currentUserStore.set(user);
-      }
-    } catch (error) {
-      console.error("Session loading error:", error);
-    } finally {
-      setIsLoading(false);
-    }
+    const currentUser = await authRepository.getCurrentUser();
+    currentUsetStore.set(currentUser);
+    setIsLoading(false);
   };
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
+  if (isLoading) return <div />;
 
   return (
     <BrowserRouter>

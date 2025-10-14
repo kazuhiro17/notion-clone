@@ -6,9 +6,9 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from "@/components/ui/command";
-import { Note } from "@/types/note";
-import { useDebouncedCallback } from "use-debounce";
+} from '@/components/ui/command';
+import { Note } from '@/modules/notes/note.entity';
+import { useDebouncedCallback } from 'use-debounce';
 
 interface SearchModalProps {
   isOpen: boolean;
@@ -25,14 +25,13 @@ export function SearchModal({
   onKeywordChanged,
   onClose,
 }: SearchModalProps) {
-
   const debounced = useDebouncedCallback(onKeywordChanged, 500);
 
   return (
     <CommandDialog open={isOpen} onOpenChange={onClose}>
       <Command shouldFilter={false}>
         <CommandInput
-          placeholder={"キーワードで検索"}
+          placeholder={'キーワードで検索'}
           onValueChange={debounced}
         />
         <CommandList>
@@ -41,10 +40,10 @@ export function SearchModal({
             {notes?.map((note) => (
               <CommandItem
                 key={note.id}
-                title={note.title ?? "無題"}
+                title={note.title ?? '無題'}
                 onSelect={() => onItemSelect(note.id)}
               >
-                <span>{note.title ?? "無題"}</span>
+                <span>{note.title ?? '無題'}</span>
               </CommandItem>
             ))}
           </CommandGroup>

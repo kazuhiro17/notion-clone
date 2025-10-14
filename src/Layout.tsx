@@ -1,38 +1,39 @@
-import { Navigate, Outlet, useNavigate } from "react-router-dom";
-import SideBar from "./components/SideBar";
-import { SearchModal } from "./components/SearchModal";
-import { useCurrentUserStore } from "./modules/auth/current-user.state";
-import { useNoteStore } from "./modules/notes/note.state";
-import { useEffect, useState } from "react";
-import { noteRepository } from "./modules/notes/note.repository";
-import { subscribe, unsubscribe } from "./lib/supabase";
-import { Note } from "./types/note";
+import { Navigate, Outlet, useNavigate } from 'react-router-dom';
+import SideBar from './components/SideBar';
+import { SearchModal } from './components/SearchModal';
+import { useCurrentUserStore } from './modules/auth/current-user.state';
+import { useNoteStore } from './modules/notes/note.state';
+import { useEffect, useState } from 'react';
+import { noteRepository } from './modules/notes/note.repository';
+import { Note } from './modules/notes/note.entity';
+import { subscribe, unsubscribe } from './lib/supabase';
 
 const Layout = () => {
   const navigate = useNavigate();
   const { currentUser } = useCurrentUserStore();
   const noteStore = useNoteStore();
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [isShowModal, setIsShowModal] = useState(false);
-  const [searchResults, setSearchResults] = useState<Note[]>([]);
+  const [searchResult, setSearchResult] = useState<Note[]>([]);
 
   useEffect(() => {
+    if (currentUser == null) return;
     fetchNotes();
-    const channel = subscribeNotes();
+    const channel = subscribeNote();
     return () => {
       if (channel != null) {
         unsubscribe(channel);
       }
     };
-  }, []);
+  }, [currentUser]);
 
-  const subscribeNotes = () => {
-    if (currentUser === null) return;
-    return subscribe(currentUser.id, (payload) => {
-      if (payload.eventType === "INSERT" || payload.eventType === "UPDATE") {
+  const subscribeNote = () => {
+    if (currentUser == null) return;
+    return subscribe(currentUser!.id, (payload) => {
+      if (payload.eventType === 'INSERT' || payload.eventType === 'UPDATE') {
         noteStore.set([payload.new]);
-      } else if (payload.eventType === "DELETE" && payload.old?.id != null) {
-        noteStore.delete(payload.old.id);
+      } else if (payload.eventType === 'DELETE') {
+        noteStore.delete(payload.old.id!);
       }
     });
   };
@@ -49,7 +50,7 @@ const Layout = () => {
     const notes = await noteRepository.findByKeyword(currentUser!.id, keyword);
     if (notes == null) return;
     noteStore.set(notes);
-    setSearchResults(notes ?? []);
+    setSearchResult(notes ?? []);
   };
 
   const moveToDetail = (noteId: number) => {
@@ -57,18 +58,18 @@ const Layout = () => {
     setIsShowModal(false);
   };
 
-  if (currentUser === null) {
-    return <Navigate replace to="/signin" />;
-  }
+  if (currentUser == null) return <Navigate replace to="/signin" />;
 
   return (
     <div className="h-full flex">
-      {!isLoading && <SideBar onSearchButtonClicked={() => setIsShowModal(true)} />}
+      {!isLoading && (
+        <SideBar onSearchButtonClicked={() => setIsShowModal(true)} />
+      )}
       <main className="flex-1 h-full overflow-y-auto">
         <Outlet />
         <SearchModal
           isOpen={isShowModal}
-          notes={searchResults}
+          notes={searchResult}
           onItemSelect={moveToDetail}
           onKeywordChanged={searchNotes}
           onClose={() => setIsShowModal(false)}

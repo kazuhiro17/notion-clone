@@ -1,10 +1,10 @@
-import Editor from "@/components/Editor";
-import { TitleInput } from "@/components/TitleInput";
-import { useCurrentUserStore } from "@/modules/auth/current-user.state";
-import { noteRepository } from "@/modules/notes/note.repository";
-import { useNoteStore } from "@/modules/notes/note.state";
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import Editor from '@/components/Editor';
+import { TitleInput } from '@/components/TitleInput';
+import { useCurrentUserStore } from '@/modules/auth/current-user.state';
+import { noteRepository } from '@/modules/notes/note.repository';
+import { useNoteStore } from '@/modules/notes/note.state';
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 
 const NoteDetail = () => {
   const params = useParams();
@@ -37,8 +37,7 @@ const NoteDetail = () => {
   };
 
   if (isLoading) return <div />;
-  if (note == null) return <div>Note is not found</div>;
-  console.log(note);
+  if (note == null) return <div>note is not existed</div>;
 
   return (
     <div className="pb-40 pt-20">
