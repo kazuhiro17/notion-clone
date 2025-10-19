@@ -6,24 +6,26 @@ import {
 import { Database } from '../../database.types';
 import { Note } from '@/modules/notes/note.entity';
 
-// LocalStorageを無効化したセキュアなSupabaseクライアント
+// LocalStorageを完全に無効化したセキュアなSupabaseクライアント
 export const supabase = createClient<Database>(
   import.meta.env.VITE_SUPABASE_URL,
   import.meta.env.VITE_SUPABASE_API_KEY,
   {
     auth: {
-      // LocalStorageを無効化し、メモリベースの認証に変更
+      // LocalStorageを完全に無効化
       storage: {
         getItem: () => null,
         setItem: () => {},
         removeItem: () => {}
       },
-      // セッションの永続化を無効化
+      // セッションの永続化を完全に無効化
       persistSession: false,
-      // 自動リフレッシュを無効化
+      // 自動リフレッシュを完全に無効化
       autoRefreshToken: false,
-      // セッション検出を無効化
-      detectSessionInUrl: false
+      // セッション検出を完全に無効化
+      detectSessionInUrl: false,
+      // ストレージキーのプレフィックスを無効化
+      storageKey: 'disabled'
     }
   }
 );
