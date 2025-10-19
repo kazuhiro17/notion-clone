@@ -1,9 +1,20 @@
-import { User } from '@supabase/supabase-js';
 import { atom, useAtom } from 'jotai';
+import { SecureUser } from './auth.repository';
 
-const currentUserAtom = atom<User>();
+// セキュアな最小限のユーザー情報のみを管理
+const currentUserAtom = atom<SecureUser | null>(null);
 
 export const useCurrentUserStore = () => {
   const [currentUser, setCurrentUser] = useAtom(currentUserAtom);
-  return { currentUser, set: setCurrentUser };
+  
+  // セキュアなログアウト処理
+  const clearUser = () => {
+    setCurrentUser(null);
+  };
+  
+  return { 
+    currentUser, 
+    set: setCurrentUser,
+    clearUser // ログアウト時に使用
+  };
 };

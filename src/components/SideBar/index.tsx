@@ -1,14 +1,14 @@
-import { FC } from 'react';
-import { Item } from './Item';
-import { NoteList } from '../NoteList';
-import UserItem from './UserItem';
-import { Plus, Search } from 'lucide-react';
-import { useCurrentUserStore } from '@/modules/auth/current-user.state';
-import { useNoteStore } from '@/modules/notes/note.state';
-import { noteRepository } from '@/modules/notes/note.repository';
-import { useNavigate } from 'react-router-dom';
-import { authRepository } from '@/modules/auth/auth.repository';
-import { ThemeToggle } from '@/components/ThemeToggle';
+import { FC } from "react";
+import { Item } from "./Item";
+import { NoteList } from "../NoteList";
+import UserItem from "./UserItem";
+import { Plus, Search } from "lucide-react";
+import { useCurrentUserStore } from "@/modules/auth/current-user.state";
+import { useNoteStore } from "@/modules/notes/note.state";
+import { noteRepository } from "@/modules/notes/note.repository";
+import { useNavigate } from "react-router-dom";
+import { authRepository } from "@/modules/auth/auth.repository";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 type Props = {
   onSearchButtonClicked: () => void;
@@ -30,7 +30,7 @@ const SideBar: FC<Props> = ({ onSearchButtonClicked }) => {
 
   const signout = async () => {
     await authRepository.signout();
-    currentUserStore.set(undefined);
+    currentUserStore.clearUser(); // セキュアなクリーンアップ
     noteStore.clear();
   };
 
